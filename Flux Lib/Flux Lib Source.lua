@@ -1309,48 +1309,46 @@ end)
 				SliderDescToggled = not SliderDescToggled
 			end)
 			
-				local function move(input)
-					local pos =
-						UDim2.new(
-							math.clamp((input.Position.X - SlideFrame.AbsolutePosition.X) / SlideFrame.AbsoluteSize.X, 0, 1),
-							-6,
-						-1.30499995,
-							0
-						)
-					local pos1 =
-						UDim2.new(
-							math.clamp((input.Position.X - SlideFrame.AbsolutePosition.X) / SlideFrame.AbsoluteSize.X, 0, 1),
-							0,
-							0,
-							3
-						)
-					CurrentValueFrame:TweenSize(pos1, "Out", "Sine", 0.1, true)
-					SlideCircle:TweenPosition(pos, "Out", "Sine", 0.1, true)
-					local value = math.floor(((pos.X.Scale * max) / max) * (max - min) + min)
-					Value.Text = tostring(value)
-					pcall(callback, value)
-				end
-				SlideCircle.InputBegan:Connect(
-					function(input)
-						if input.UserInputType == Enum.UserInputType.MouseButton1 then
-							dragging = true
-						end
-					end
-				)
-				SlideCircle.InputEnded:Connect(
-					function(input)
-						if input.UserInputType == Enum.UserInputType.MouseButton1 then
-							dragging = false
-						end
-					end
-				)
-				game:GetService("UserInputService").InputChanged:Connect(
-				function(input)
-					if dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
-						move(input)
-					end
-				end
-				)
+			local function move(input)
+    local pos =
+        UDim2.new(
+            math.clamp((input.Position.X - SlideFrame.AbsolutePosition.X) / SlideFrame.AbsoluteSize.X, 0, 1),
+            -6,
+            -1.30499995,
+            0
+        )
+    local pos1 =
+        UDim2.new(
+            math.clamp((input.Position.X - SlideFrame.AbsolutePosition.X) / SlideFrame.AbsoluteSize.X, 0, 1),
+            0,
+            0,
+            3
+        )
+    CurrentValueFrame:TweenSize(pos1, "Out", "Sine", 0.1, true)
+    SlideCircle:TweenPosition(pos, "Out", "Sine", 0.1, true)
+    local value = math.floor(((pos.X.Scale * max) / max) * (max - min) + min)
+    Value.Text = tostring(value)
+    pcall(callback, value)
+end
+
+SlideCircle.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+        dragging = true
+    end
+end)
+
+SlideCircle.InputEnded:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+        dragging = false
+    end
+end)
+
+game:GetService("UserInputService").InputChanged:Connect(function(input)
+    if dragging and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
+        move(input)
+    end
+end)
+
 			Container.CanvasSize = UDim2.new(0, 0, 0, ContainerLayout.AbsoluteContentSize.Y)
 			function SliderFunc:Change(tochange)
 				CurrentValueFrame.Size = UDim2.new((tochange or 0) / max, 0, 0, 3)
