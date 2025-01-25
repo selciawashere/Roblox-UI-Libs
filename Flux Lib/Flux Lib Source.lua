@@ -109,7 +109,7 @@ function Flux:Window(text, bottom,mainclr,toclose)
 	MainFrame.BackgroundColor3 = Color3.fromRGB(50, 53, 59)
 	MainFrame.ClipsDescendants = true
 	MainFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
-	MainFrame.Size = UDim2.new(0, 0, 0, 0)
+	MainFrame.Size = UDim2.new(0.8, 0, 0.7, 0) -- 80% of screen width, 70% of screen height
 
 	MainCorner.CornerRadius = UDim.new(0, 5)
 	MainCorner.Name = "MainCorner"
@@ -118,7 +118,7 @@ function Flux:Window(text, bottom,mainclr,toclose)
 	LeftFrame.Name = "LeftFrame"
 	LeftFrame.Parent = MainFrame
 	LeftFrame.BackgroundColor3 = Color3.fromRGB(47, 49, 54)
-	LeftFrame.Size = UDim2.new(0, 205, 0, 484)
+	LeftFrame.Size = UDim2.new(0.3, 0, 1, 0) -- 30% of MainFrame width, full height
 
 	LeftCorner.CornerRadius = UDim.new(0, 5)
 	LeftCorner.Name = "LeftCorner"
