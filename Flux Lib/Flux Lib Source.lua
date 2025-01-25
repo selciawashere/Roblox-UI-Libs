@@ -1117,7 +1117,7 @@ end)
 			Circle.AnchorPoint = Vector2.new(0.5, 0.5)
 			Circle.BackgroundColor3 = Color3.fromRGB(211, 211, 211)
 			Circle.Position = UDim2.new(-0.150690272, 0, 0.503000021, 0)
-			Circle.Size = UDim2.new(0, 11, 0, 11)
+			Circle.Size = UDim2.new(0, 15, 0, 15)
 
 
 			CircleCorner.CornerRadius = UDim.new(2, 6)
@@ -1131,7 +1131,7 @@ end)
 			CircleSmall.BackgroundColor3 = Color3.fromRGB(64, 68, 75)
 			CircleSmall.BackgroundTransparency = 1.000
 			CircleSmall.Position = UDim2.new(0.485673368, 0, 0.503000021, 0)
-			CircleSmall.Size = UDim2.new(0, 9, 0, 9)
+			CircleSmall.Size = UDim2.new(0, 15, 0, 15)
 
 			CircleSmallCorner.CornerRadius = UDim.new(2, 6)
 			CircleSmallCorner.Name = "CircleSmallCorner"
