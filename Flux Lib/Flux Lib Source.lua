@@ -268,6 +268,89 @@ imageButton.MouseButton1Click:Connect(function()
         uitoggled = false
     end
 end)
+local player = game.Players.LocalPlayer
+local mouse = player:GetMouse()
+
+-- Create a ScreenGui
+local screenGui = Instance.new("ScreenGui")
+screenGui.Parent = player.PlayerGui
+
+-- Create a draggable ImageButton
+local toggleButton = Instance.new("ImageButton")
+toggleButton.Size = UDim2.new(0, 100, 0, 100)
+toggleButton.Position = UDim2.new(0, 100, 0, 100)
+toggleButton.Image = "rbxassetid://75237883871377"
+toggleButton.Parent = screenGui
+
+-- Add rounded corners
+local corner = Instance.new("UICorner")
+corner.CornerRadius = UDim.new(0, 20)
+corner.Parent = toggleButton
+
+toggleButton.BackgroundTransparency = 1
+toggleButton.ClipsDescendants = true
+toggleButton.BorderSizePixel = 0
+
+-- Variables for dragging
+local dragging = false
+local dragStart, startPos
+local uitoggled = false -- Initial state for hiding/showing the UI
+
+-- Reference UI elements to toggle (replace `MainFrame` and `FluxLib` with your actual objects)
+local MainFrame = Instance.new("Frame") -- Replace with your actual frame
+MainFrame.Size = UDim2.new(0, 706, 0, 484)
+MainFrame.Position = UDim2.new(0.5, -353, 0.5, -242)
+MainFrame.AnchorPoint = Vector2.new(0.5, 0.5)
+MainFrame.Parent = screenGui
+
+local FluxLib = screenGui -- Adjust based on the parent of your UI
+
+-- Function to update the position of the button while dragging
+local function updateDrag(input)
+    local delta = input.Position - dragStart
+    toggleButton.Position = UDim2.new(
+        startPos.X.Scale,
+        startPos.X.Offset + delta.X,
+        startPos.Y.Scale,
+        startPos.Y.Offset + delta.Y
+    )
+end
+
+-- Handle input events for dragging
+toggleButton.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 then
+        dragging = true
+        dragStart = input.Position
+        startPos = toggleButton.Position
+        input.Changed:Connect(function()
+            if input.UserInputState == Enum.UserInputState.End then
+                dragging = false
+            end
+        end)
+    end
+end)
+
+game:GetService("UserInputService").InputChanged:Connect(function(input)
+    if dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
+        updateDrag(input)
+    end
+end)
+
+-- Toggle UI visibility function
+local function toggleUI()
+    if uitoggled then
+        MainFrame:TweenSize(UDim2.new(0, 706, 0, 484), Enum.EasingDirection.Out, Enum.EasingStyle.Quart, 0.6, true)
+        FluxLib.Enabled = true
+    else
+        MainFrame:TweenSize(UDim2.new(0, 0, 0, 0), Enum.EasingDirection.Out, Enum.EasingStyle.Quart, 0.6, true)
+        wait(0.5)
+        FluxLib.Enabled = false
+    end
+    uitoggled = not uitoggled
+end
+
+-- Toggle UI visibility on button click
+toggleButton.MouseButton1Click:Connect(toggleUI)
 
 	function Flux:Notification(desc,buttontitle)
 		for i, v in next, MainFrame:GetChildren() do
