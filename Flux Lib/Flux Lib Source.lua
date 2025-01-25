@@ -236,7 +236,6 @@ local dragStart, startPos
 local uitoggled = false -- Initial state for hiding/showing the UI
 
 -- Reference your existing UI elements
-local MainFrame = player.PlayerGui:WaitForChild("MainFrame") -- Replace "MainFrame" with your actual frame's name
 local FluxLib = MainFrame.Parent -- Replace with the correct parent if needed
 
 -- Function to update the position of the button while dragging
