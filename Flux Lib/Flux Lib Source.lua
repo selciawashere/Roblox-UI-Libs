@@ -205,7 +205,70 @@ function Flux:Window(text, bottom,mainclr,toclose)
 			end
 		end
 	)
-	
+			local uitoggled = false
+
+-- Create ImageButton
+local imageButton = Instance.new("ImageButton")
+imageButton.Name = "ToggleButton"
+imageButton.Size = UDim2.new(0, 75, 0, 75)
+imageButton.Position = UDim2.new(0, 50, 0, 50)
+imageButton.BackgroundTransparency = 0
+imageButton.BackgroundColor3 = Color3.fromRGB(36, 36, 36)
+imageButton.Image = "rbxassetid://99209252923472"
+imageButton.Parent = game.CoreGui
+
+-- Add UICorner for rounded corners
+local uiCorner = Instance.new("UICorner", imageButton)
+uiCorner.CornerRadius = UDim.new(0, 10)
+
+-- Dragging functionality with mobile support
+local dragging = false
+local dragStart, startPos
+local UserInputService = game:GetService("UserInputService")
+
+local function updateDrag(input)
+    local delta = input.Position - dragStart
+    imageButton.Position = UDim2.new(
+        startPos.X.Scale,
+        startPos.X.Offset + delta.X,
+        startPos.Y.Scale,
+        startPos.Y.Offset + delta.Y
+    )
+end
+
+imageButton.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+        dragging = true
+        dragStart = input.Position
+        startPos = imageButton.Position
+        input.Changed:Connect(function()
+            if input.UserInputState == Enum.UserInputState.End then
+                dragging = false
+            end
+        end)
+    end
+end)
+
+imageButton.InputChanged:Connect(function(input)
+    if dragging and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
+        updateDrag(input)
+    end
+end)
+
+-- Toggling GUI functionality
+imageButton.MouseButton1Click:Connect(function()
+    if uitoggled == false then
+        MainFrame:TweenSize(UDim2.new(0, 0, 0, 0), Enum.EasingDirection.Out, Enum.EasingStyle.Quart, .6, true)
+        uitoggled = true
+        task.wait(0.5)
+        FluxLib.Enabled = false
+    else
+        MainFrame:TweenSize(UDim2.new(0, 706, 0, 484), Enum.EasingDirection.Out, Enum.EasingStyle.Quart, .6, true)
+        FluxLib.Enabled = true
+        uitoggled = false
+    end
+end)
+
 	function Flux:Notification(desc,buttontitle)
 		for i, v in next, MainFrame:GetChildren() do
 			if v.Name == "NotificationBase" then
